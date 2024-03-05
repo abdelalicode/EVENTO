@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForgetController;
+use App\Http\Controllers\OrganisatorController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Gate;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +31,16 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('organisator' , 'setorganisator')->name('organisator');
     Route::post('participant' , 'setparticipant')->name('participant');
 });
+
+
+
+Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::class, 'AdminDashboard']);
+
+Route::middleware('can:access-organisateur')->get('/OrgaDashboard', [OrganisatorController::class, 'OrgaDashboard']);
+
+Route::get('password/reset', [ForgetController::class, 'show'])->name('password.request');
+Route::post('password/email', [ForgetController::class, 'sendlink'])->name('password.email');
+Route::get('password/reset/{token}/{email}', [ForgetController::class, 'breset'])->name('password.reset');
+Route::post('password/reseting', [ForgetController::class, 'resetPassword'])->name('resetPassword');
 
 

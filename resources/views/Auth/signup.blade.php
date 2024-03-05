@@ -25,7 +25,7 @@
                 @csrf
                 <div class="mb-10">
                     <h3 class="text-4xl font-extrabold">SIGN UP</h3>
-                    <p class="text-sm mt-6">Sign up and Immerse yourself in a hassle-free journey with our Youcode
+                    <p class="text-sm mt-6">Sign up and Immerse yourself in a hassle-free journey with our Evento
                         community</p>
                 </div>
 

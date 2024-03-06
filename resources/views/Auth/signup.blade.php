@@ -140,7 +140,7 @@
                     </button>
                 </div>
                 <p class="text-sm mt-10 text-center">You have an account ?<a href="{{ route('signinview') }}"
-                        class="text-red-900 font-semibold hover:underline ml-1">Register here</a></p>
+                        class="text-red-900 font-semibold hover:underline ml-1">Sign here</a></p>
             </form>
             <div
                 class="h-full md:py-6 flex items-center relative max-md:before:hidden before:absolute before:bg-gradient-to-r before:from-red-500 before:to-red-900 before:h-full before:w-3/4 before:right-0 before:z-0">

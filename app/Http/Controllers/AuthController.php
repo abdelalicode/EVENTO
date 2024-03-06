@@ -77,7 +77,7 @@ class AuthController extends Controller
                 return redirect('/AdminDashboard');
                 break;
             case 'organisateur':
-                return redirect('/OrgaDashboard');
+                return redirect('/organisateur/dashboard');
                 break;
             case 'participant':
                 return redirect('/');

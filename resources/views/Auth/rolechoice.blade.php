@@ -3,7 +3,7 @@
 @section('content')
     <div class="w-screen min-h-screen bg-gradient-to-r from-red-500 to-rose-900 p-12">
         <div class="flex space-x-96 mx-auto">
-            <h1 class="text-6xl text-white" style="font-family: 'Oswald', sans-serif;">EVENTO</h1>
+            <h1 class="text-6xl text-white" style="font-family: 'Oswald', sans-serif;">EVNTO</h1>
             <h1 class="mt-5 text-2xl text-white" style="font-family: 'Allura' , sans serif;">Creating moments to remember</h1>
         </div>
 

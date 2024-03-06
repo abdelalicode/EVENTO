@@ -46,7 +46,8 @@ class EventController extends Controller
 
         $validatedData['date'] = date('Y-m-d', strtotime($date));
     
-        Event::create($validatedData);
+        $event = Event::create($validatedData);
+        $event->addMediaFromRequest('image')->toMediaCollection('eventimages');
         return redirect()->route('organisateur.events');
       
     }

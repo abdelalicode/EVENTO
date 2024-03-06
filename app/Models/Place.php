@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Place extends Model
 {
     use HasFactory;
+
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }

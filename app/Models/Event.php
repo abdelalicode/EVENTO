@@ -16,9 +16,16 @@ class Event extends Model
         'duration_hours',
         'duration_minutes',
         'acceptance',
+        'approved',
         'numplaces_available',
         'user_id',
         'place_id',
         'category_id',
+        
     ];
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
 }

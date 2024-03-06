@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\OrganisatorController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
 
@@ -35,7 +37,7 @@ Route::controller(AuthController::class)->group(function(){
 
 
 
-Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::class, 'AdminDashboard']);
+Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
 
 // Route::middleware('can:access-organisateur')->get('/OrgaDashboard', [OrganisatorController::class, 'OrgaDashboard']);
 // Route::middleware('can:access-organisateur')->get('/OrgaEvents', [OrganisatorController::class, 'OrgaEvents']);
@@ -43,9 +45,13 @@ Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::
 Route::middleware('can:access-organisateur')->prefix('organisateur')->group(function () {
     Route::get('/dashboard', [OrganisatorController::class, 'OrgaDashboard'])->name('organisateur.dashboard');
     Route::get('/events', [OrganisatorController::class, 'OrgaEvents'])->name('organisateur.events');
-    Route::resource('event', EventController::class);
 });
 
+Route::resource('event', EventController::class);
+Route::resource('categorie', CategoryController::class);
+
+Route::get('unapproved', [EventController::class, 'unapproved'])->name('unapproved');
+Route::put('unapproved', [EventController::class, 'approve'])->name('approve.event');
 
 Route::get('password/reset', [ForgetController::class, 'show'])->name('password.request');
 Route::post('password/email', [ForgetController::class, 'sendlink'])->name('password.email');

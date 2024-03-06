@@ -13,6 +13,6 @@ class AdminController extends Controller
 
     public function AdminDashboard()
     { 
-         echo "ALLO ADMIN";
+         return view('Admin.adminmain');
     }
 }

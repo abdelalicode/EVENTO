@@ -77,7 +77,7 @@
                 <div class="mt-10">
                     <button type="submit"
                         class="w-full shadow-xl py-3 px-4 text-sm font-semibold rounded text-white bg-sky-700 hover:bg-sky-900 focus:outline-none">
-                        Sign Up
+                        Sign In
                     </button>
                 </div>
                 <p class="text-sm mt-10 text-center">Don't have an account <a href="{{ route('signupview') }}"

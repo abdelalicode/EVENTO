@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Category;
 use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,8 +17,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        $this->authorize('access-organisateur');
+        
+    }
 
+    public function unapproved()
+    {
+        $unapproveds = Event::where('approved', 0)->get();
+        return view('Admin.unapproved', compact('unapproveds'));
     }
 
     /**
@@ -32,6 +38,8 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
+        $this->authorize('access-organisateur');
+
         $date = $request->date;
         
         $validatedData = $request->validated();
@@ -64,11 +72,19 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        
+        $this->authorize('access-organisateur');
         $event->update($request->all());
         return redirect()->route('organisateur.events');
     }
 
+    public function approve(Request $request)
+    {
+        $this->authorize('access-admin');
+        $event = Event::find($request->id);
+
+        $event->update(['approved'=> 1]);
+
+    }
    
 
     /**
@@ -76,6 +92,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+       $this->authorize('access-organisateur');
        $event->delete();
        return redirect()->route('organisateur.events');
     }

@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/leto-time/64/__calendar_appointment_event_date-256.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
@@ -57,7 +58,7 @@
                 </li>
             </ul>
             <div class="py-2">
-                <a href="#"
+                <a href="{{route('logout')}}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
                     out</a>
             </div>

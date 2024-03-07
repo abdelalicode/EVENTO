@@ -62,9 +62,11 @@ class AuthController extends Controller
 
     public function setparticipant()
     {
+        $randomStr = Str::random(2);
         $user = Session::get('validateduser');
         $user['role_id'] = 3;
         $user['password'] = Hash::make($user['password']);
+        $user['username'] = strtolower($user['firstname'] . $user['lastname'] . $randomStr);
         $client = User::create($user);
         return redirect()->route('signinview');
     }

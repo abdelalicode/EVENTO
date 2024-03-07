@@ -87,4 +87,13 @@ class AuthController extends Controller
                 break;
         }
     }
+
+    public function logout()
+    {
+        session()->flush();;
+        Auth::logout();
+
+        return redirect()->route('homepage');
+
+    }
 }

@@ -17,7 +17,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        
     }
 
     public function unapproved()
@@ -41,23 +40,22 @@ class EventController extends Controller
         $this->authorize('access-organisateur');
 
         $date = $request->date;
-        
+
         $validatedData = $request->validated();
 
         $validatedData['date'] = date('Y-m-d', strtotime($date));
-    
+
         $event = Event::create($validatedData);
         $event->addMediaFromRequest('image')->toMediaCollection('eventimages');
         return redirect()->route('organisateur.events');
-      
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Event $event)
     {
-        //
+        return view('Home.details', compact('event'));
     }
 
     /**
@@ -66,6 +64,54 @@ class EventController extends Controller
     public function edit(string $id)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+
+        $events = Event::where('title', 'LIKE', '%' . $query . '%')->get();
+
+        $eventData = [];
+        foreach ($events as $event) {
+            $imageUrl = $event->getFirstMediaUrl('eventimages');
+
+            $eventData[] = [
+                'id' => $event->id,
+                'title' => $event->title,
+                'place' => $event->place->venue,
+                'date' => $event->date,
+                'category' => $event->category->name,
+                'imageUrl' => $imageUrl,
+            ];
+        }
+
+        return response()->json(['events' => $eventData]);
+    }
+
+    public function select(Request $request)
+    {
+        $selected = $request->input('category');
+
+        $events = Event::where('category_id', 'LIKE', '%' . $selected . '%')->get();
+
+
+        $eventData = [];
+        foreach ($events as $event) {
+            $imageUrl = $event->getFirstMediaUrl('eventimages');
+
+            $eventData[] = [
+                'id' => $event->id,
+                'title' => $event->title,
+                'place' => $event->place->venue,
+                'date' => $event->date,
+                'category' => $event->category->name,
+                'imageUrl' => $imageUrl,
+            ];
+        }
+
+        return response()->json(['eventsbycat' => $eventData]);
     }
 
     /**
@@ -83,18 +129,19 @@ class EventController extends Controller
         $this->authorize('access-admin');
         $event = Event::find($request->id);
 
-        $event->update(['approved'=> 1]);
+        $event->update(['approved' => 1]);
 
+        return redirect()->route('unapproved');
     }
-   
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Event $event)
     {
-       $this->authorize('access-organisateur');
-       $event->delete();
-       return redirect()->route('organisateur.events');
+        $this->authorize('access-organisateur');
+        $event->delete();
+        return redirect()->route('organisateur.events');
     }
 }

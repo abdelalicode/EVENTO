@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('username');
-            $table->boolean('restricted');
+            $table->boolean('restricted')->default(0);
             $table->foreignIdFor(
                 Role::class
             )->nullable()->constrained();

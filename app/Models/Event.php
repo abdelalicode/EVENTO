@@ -31,4 +31,9 @@ class Event extends Model implements HasMedia
     {
         return $this->belongsTo(Place::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

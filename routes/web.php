@@ -33,6 +33,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('signup' , 'signup')->name('signup');
     Route::post('organisator' , 'setorganisator')->name('organisator');
     Route::post('participant' , 'setparticipant')->name('participant');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 
@@ -51,6 +52,9 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
 
 Route::resource('event', EventController::class);
 Route::resource('categorie', CategoryController::class);
+
+Route::get('/search', [EventController::class, 'search']);
+Route::get('/select', [EventController::class, 'select']);
 
 Route::get('unapproved', [EventController::class, 'unapproved'])->name('unapproved');
 Route::put('unapproved', [EventController::class, 'approve'])->name('approve.event');

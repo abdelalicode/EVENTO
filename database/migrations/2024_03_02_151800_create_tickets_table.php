@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use App\Models\Reservation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,11 +15,8 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('entrance');
-            $table->string('seatnumber');
-            $table->foreignIdFor(
-                Reservation::class
-            )->constrained();
+            $table->string('type');
+            $table->decimal('price', 4 , 2);
             $table->timestamps();
         });
     }

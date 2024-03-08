@@ -17,17 +17,17 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->dateTime('date');
+            $table->date('date');
             $table->integer('duration_hours');
             $table->integer('duration_minutes');
             $table->boolean('acceptance')->default(0);
             $table->integer('numplaces_available')->default(0);
             $table->foreignIdFor(
                 User::class
-            )->constrained();
+            )->constrained()->onDelete('cascade');
             $table->foreignIdFor(
                 Place::class
-            )->constrained();
+            )->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

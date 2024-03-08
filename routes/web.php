@@ -40,6 +40,8 @@ Route::controller(AuthController::class)->group(function(){
 
 
 Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+Route::middleware('can:access-admin')->get('/allusers', [AdminController::class, 'allusers'])->name('allusers');
+Route::middleware('can:access-admin')->put('/banuser/{user}', [AdminController::class, 'banuser'])->name('ban.user');
 
 // Route::middleware('can:access-organisateur')->get('/OrgaDashboard', [OrganisatorController::class, 'OrgaDashboard']);
 // Route::middleware('can:access-organisateur')->get('/OrgaEvents', [OrganisatorController::class, 'OrgaEvents']);
@@ -50,6 +52,8 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
     Route::resource('ticket', TicketController::class);
 
 });
+
+
 
 Route::resource('event', EventController::class);
 Route::resource('categorie', CategoryController::class);

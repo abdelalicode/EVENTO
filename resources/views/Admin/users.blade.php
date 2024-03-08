@@ -58,7 +58,7 @@
                 </li>
             </ul>
             <div class="py-2">
-                <a href="{{route('logout')}}"
+                <a href="{{ route('logout') }}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
                     out</a>
             </div>
@@ -66,27 +66,260 @@
     </div>
 
 
-    <div class="p-10 mt-8 sm:ml-64">
 
-        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div class="flex flex-wrap"></div>
-            @foreach ($categories as $categorie)
-            <div class="w-full text-slate-900 bg-slate-200">
-                <div class="container flex items-center justify-between px-6 py-4 mx-auto">
-                    <div class="flex">
-                        <svg width="40" height="40">
-                            <circle cx="50" cy="50" r="40" fill="white" />
-                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="16" fill="black">{{$categorie->id}}</text>
-                       </svg>
-            
-                        <p class="mx-3 mt-2 font-medium">{{$categorie->name}}</p>
-                    </div>
+        <div class="p-10 mt-8 sm:ml-64">
+            <h1 class="p-5" style="font-size:1.5em; font-family: 'Oswald', sans-serif;">LIST OF USERS</h1>
+
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+                <div class="flex flex-wrap"></div>
+
+
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-teal-100 dark:text-blue-100">
+                        <thead class="text-xs text-white uppercase bg-teal-600 dark:text-white">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    FULL NAME
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    EMAIL
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    JOINED IN
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    ROLE
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    USERNAME
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    STATUS
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    BAN
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($allusers as $user)
+                            <tr class="bg-slate-100 border-b border-slate-100 text-blue-900">
+                                <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap dark:text-blue-100">
+                                    {{ $user->firstname }} {{ $user->lastname }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $user->email }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ \Carbon\Carbon::parse($user->created_at)->format('j F Y') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $user->role->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $user->username }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($user->restricted == 0)
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">active</span>
+                                    @else
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">banned</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 border-slate-200">
+
+
+                                    <button data-modal-target="popup-modal{{ $user->id }}"
+                                        data-modal-toggle="popup-modal{{ $user->id }}"
+                                        class="block  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        <img width="24" height="24" src="https://img.icons8.com/fluency/48/security-block.png" alt="security-block"/>
+                                        </button>
+
+                                    <div id="popup-modal{{ $user->id }}" tabindex="-1"
+                                        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div class="relative p-4 w-full max-w-md max-h-full">
+                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                <button type="button"
+                                                    class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    data-modal-hide="popup-modal{{ $user->id }}">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                                <div class="p-4 md:p-5 text-center">
+                                                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>
+                                                    <h3
+                                                        class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                        Are you sure you want to ban this user?</h3>
+                                                    <form action="{{route('ban.user', $user->id)}}" method="post">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit"
+                                                            class="text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                            Yes, I Approve
+                                                        </button>
+                                                        <button data-modal-hide="popup-modal"
+                                                            type="button"
+                                                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
+                                                            cancel</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            @endforeach
-            
 
-            {{-- <div class="grid grid-cols-3 gap-4 mb-4">
+
+
+
+                {{-- <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+                            <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 1v16M1 9h16" />
+                                </svg>
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+                            <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 1v16M1 9h16" />
+                                </svg>
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+                                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </p>
+                            </div>
+                        </div> --}}
+            </div>
+        </div>
+
+
+
+
+    {{-- <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <p class="text-2xl text-gray-400 dark:text-gray-500">
                         <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -209,7 +442,6 @@
                     </p>
                 </div>
             </div> --}}
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

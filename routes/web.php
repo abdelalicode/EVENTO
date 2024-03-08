@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrganisatorController;
+use App\Http\Controllers\TicketController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
@@ -44,6 +45,8 @@ Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::
 Route::middleware('can:access-organisateur')->prefix('organisateur')->group(function () {
     Route::get('/dashboard', [OrganisatorController::class, 'OrgaDashboard'])->name('organisateur.dashboard');
     Route::get('/events', [OrganisatorController::class, 'OrgaEvents'])->name('organisateur.events');
+    Route::resource('ticket', TicketController::class);
+
 });
 
 Route::resource('event', EventController::class);

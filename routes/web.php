@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrganisatorController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TicketController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,8 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
 
 Route::resource('event', EventController::class);
 Route::resource('categorie', CategoryController::class);
+
+Route::resource('reservation', ReservationController::class);
 
 Route::get('/search', [EventController::class, 'search']);
 Route::get('/select', [EventController::class, 'select']);

@@ -22,6 +22,7 @@ class EventController extends Controller
     public function unapproved()
     {
         $unapproveds = Event::where('approved', 0)->get();
+        
         return view('Admin.unapproved', compact('unapproveds'));
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,16 +30,16 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'type' => 'required|string',
+        $validated = $request->validate([
+            'type' => 'required',
             'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required',
             'event_id' => 'required|exists:events,id',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+
+        $ticket = Ticket::create($validated);
+        return redirect()->route('organisateur.events');
 
     }
 

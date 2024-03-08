@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Models\Ticket;
 
 class ReservationController extends Controller
 {
@@ -29,8 +30,19 @@ class ReservationController extends Controller
      */
     public function store(StoreReservationRequest $request)
     {
-        //
+        $reservation = Reservation::create($request->validated());
+
+        if ((int) $request->status === 1) {
+            $ticketId = $request->ticket_id;
+            $ticket = Ticket::findOrFail($ticketId);
+            $ticket->decrement('quantity');
+        }
+
+        $message = (int) $request->status === 1 ? 'Reservation confirmed.' : 'Reservation is pending. Please wait for confirmation.';
+        
+        return redirect()->back()->with('message', $message);
     }
+    
 
     /**
      * Display the specified resource.

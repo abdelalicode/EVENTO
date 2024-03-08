@@ -20,6 +20,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
+        [modal-backdrop] {
+            display: none;
+        }
     </style>
 
 </head>
@@ -135,6 +139,12 @@
                     {{ $event->title }}
                 </h1>
 
+                @if(session('message'))
+                <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                    <span class="font-medium"></span> {{ session('message') }}
+                </div>
+                @endif
+
                 <main class="relative z-20 w-full mt-8 md:flex md:items-center xl:mt-12">
                     <div class="absolute w-full bg-blue-400 -z-10 md:h-96 rounded-2xl"></div>
 
@@ -151,46 +161,135 @@
                             </div>
 
 
-                            
-                            <div class="relative px-5 py-2 font-medium text-white group">
-                                <span class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-blue-500 group-hover:bg-purple-700 group-hover:skew-x-12"></span>
-                                <span class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-blue-700 group-hover:bg-blue-500 group-hover:-skew-x-12"></span>
-                                <span class="absolute bottom-0 left-0 hidden w-10 h-20 transition-all duration-100 ease-out transform -translate-x-8 translate-y-10 bg-blue-600 -rotate-12"></span>
-                                <span class="absolute bottom-0 right-0 hidden w-10 h-20 transition-all duration-100 ease-out transform translate-x-10 translate-y-8 bg-blue-400 -rotate-12"></span>
-                                @if ($event->numplaces_available === 0)
-                                <span class="relative">SOLD OUT!</span>
-                                @else
-                                <span class="relative">Places Available: {{ $event->numplaces_available }} Ticket</span> 
-                                @endif
-                                
-                            </div>
+                            @if (!$event->tickets->count())
+                                <span
+                                    class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">NO
+                                    TICKETS AVAILABLE!</span>
+                            @endif
+                            @foreach ($event->tickets as $ticket)
+                                <div class="relative my-1 px-5 py-2 font-medium text-white group">
+                                    <span
+                                        class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-blue-500 group-hover:bg-purple-700 group-hover:skew-x-12"></span>
+                                    <span
+                                        class="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-blue-700 group-hover:bg-blue-500 group-hover:-skew-x-12"></span>
+                                    <span
+                                        class="absolute bottom-0 left-0 hidden w-10 h-20 transition-all duration-100 ease-out transform -translate-x-8 translate-y-10 bg-blue-600 -rotate-12"></span>
+                                    <span
+                                        class="absolute bottom-0 right-0 hidden w-10 h-20 transition-all duration-100 ease-out transform translate-x-10 translate-y-8 bg-blue-400 -rotate-12"></span>
 
-                            <p class="mt-4 text-lg leading-relaxed text-white md:text-xl"> {{ $event->description }}
+
+
+
+                                    @if ($ticket->quantity === 0)
+                                        <span class="relative">SOLD OUT!</span>
+                                    @else
+                                        <span class="relative uppercase">{{ $ticket->type }}: {{ $ticket->quantity }}
+                                            Ticket(s)</span>
+                                    @endif
+
+
+                                </div>
+                            @endforeach
+
+                            <p class="mt-4 text-lg leading-relaxed text-white md:text-xl">
+                                {{ strlen($event->description) > 30 ? substr($event->description, 0, 100) . '...' : $event->description }}
                             </p>
 
                             <div class="flex items-center justify-between mt-6 md:justify-start">
-                                <button title="left arrow"
-                                    class="p-2 text-white transition-colors duration-300 border rounded-full rtl:-scale-x-100 hover:bg-blue-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                                    </svg>
+
+                                @auth
+                                    
+                                
+                                <!-- Modal toggle -->
+                                <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+                                    class="block text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button">
+                                    <img width="60" height="60"
+                                        src="https://img.icons8.com/stickers/100/ticket.png" alt="ticket" />
+
                                 </button>
 
-                                <button title="right arrow"
-                                    class="p-2 text-white transition-colors duration-300 border rounded-full rtl:-scale-x-100 md:mx-6 hover:bg-blue-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
+                                <!-- Main modal -->
+                                <div id="default-modal" tabindex="-1" aria-hidden="true"
+                                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                        <!-- Modal content -->
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <!-- Modal header -->
+                                            <div
+                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    SELECT YOUR TICKET
+                                                </h3>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    data-modal-hide="default-modal">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="p-4 md:p-5 space-y-4">
+                                                <form action="{{ route('reservation.store') }}" method="POST" class="max-w-sm mx-auto">
+                                                    @csrf
+
+                                                    @if ($event->acceptance === 0)
+                                                        <input type="hidden" name="status"
+                                                            value="{{ (int) 1 }}">
+                                                    @else
+                                                        <input type="hidden" name="status"
+                                                            value="{{ (int) 0 }}">
+                                                    @endif
+
+                                                    <input type="hidden" name="user_id" value="{{ (int) Auth::user()->id }}">
+                                                    <label
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">TICKET
+                                                        CATEGORY</label>
+                                                    <select name="ticket_id"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        @foreach ($event->tickets as $ticket)
+                                                            <option value="{{ (int) $ticket->id }}">{{ $ticket->type }}:
+                                                                {{ $ticket->price }}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    
+                                                    <!-- Modal footer -->
+                                            <div
+                                            class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                            <button data-modal-hide="default-modal" type="submit"
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
+                                                accept</button>
+                                            <button data-modal-hide="default-modal" type="button"
+                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
+                                        </div>
+                                                </form>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @endauth
+
+                                @guest
+                                   SIGN IN TO RESERVE YOUR PLACE 
+                                @endguest
+
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
         </section>
-
+       
+    
     </div>
 
 </body>

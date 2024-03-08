@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'type',
+        'quantity',
+        'price',
+        'event_id'	
+    ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

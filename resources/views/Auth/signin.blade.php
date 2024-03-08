@@ -67,10 +67,15 @@
                 </div>
                 <div class="flex items-center gap-4 justify-between mt-4">
                     <div class="flex items-center">
-                        <input id="remember-me" name="remember-me" type="checkbox"
-                            class="shrink-0 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                         <label for="remember-me" class="ml-3 block text-sm">
-                            Remember me
+                            @if ($errors->any())
+                            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                                role="alert">
+                                @foreach ($errors->all() as $error)
+                                    <div>{{ $error }}</div>
+                                @endforeach
+                            </div>
+                        @endif
                         </label>
                     </div>
                 </div>

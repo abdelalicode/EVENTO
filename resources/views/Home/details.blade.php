@@ -67,7 +67,11 @@
                         <a href="#"
                             class="block  py-2 px-3 text-gray-700 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
                     </li>
+                    @guest
                     <li>
+                        
+                            
+                        
                         <a href="{{ route('signinview') }}"
                             class="block text-gray-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                             <div
@@ -124,6 +128,49 @@
                         </a>
 
                     </li>
+                    @endguest
+                    @auth
+                    <li>
+                        
+                    <div class="mx-16">
+                        <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName"
+                           class="flex items-center text-sm pe-4 font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:m-8 sm:m-4 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white absolute top-0 right-0"
+                           type="button">
+                           <span class="sr-only">Open user menu</span>
+                           <img class="w-8 h-8 me-2 rounded-full" src="https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg" alt="user photo">
+                           <p class="text-stone-900 capitalize" style="font-size:1.2em; font-family: 'Oswald', sans-serif;"> {{Auth::user()->username}} </p>
+                           <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                               viewBox="0 0 10 6">
+                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                   d="m1 1 4 4 4-4" />
+                           </svg>
+                       </button>
+               
+                       <!-- Dropdown menu -->
+                       <div id="dropdownAvatarName"
+                           class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                           <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                               <div class="font-medium ">{{Auth::user()->firstname}} {{Auth::user()->lastname}}</div>
+                               <div class="truncate">{{Auth::user()->email}}</div>
+                           </div>
+                           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                               aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+                               <li>
+                                   <a href="{{route('myreservations')}}"
+                                       class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">MY RESERVATIONS</a>
+                               </li>
+                           </ul>
+                           <div class="py-2">
+                               <a href="{{route('logout')}}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
+                                   out</a>
+                           </div>
+                       </div>
+                       </div> 
+                    
+                        
+                      </li>
+                      @endauth
                 </ul>
             </div>
         </div>

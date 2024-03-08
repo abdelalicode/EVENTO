@@ -14,4 +14,12 @@ class Reservation extends Model
         'user_id',
         'ticket_id'
     ];
+
+
+    public function ticket()
+    {
+        return $this->BelongsTo(Ticket::class);
+    }
+
+    
 }

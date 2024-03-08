@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -43,6 +44,11 @@ class ReservationController extends Controller
         return redirect()->back()->with('message', $message);
     }
     
+    public function myreservations()
+    {
+        $myreservations = Reservation::where('user_id', Auth::user()->id)->get();
+        return view ('Home.myreservations', compact('myreservations'));
+    }
 
     /**
      * Display the specified resource.

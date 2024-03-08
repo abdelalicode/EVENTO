@@ -34,7 +34,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('signup' , 'signup')->name('signup');
     Route::post('organisator' , 'setorganisator')->name('organisator');
     Route::post('participant' , 'setparticipant')->name('participant');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 });
 
 
@@ -50,7 +50,6 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
     Route::get('/dashboard', [OrganisatorController::class, 'OrgaDashboard'])->name('organisateur.dashboard');
     Route::get('/events', [OrganisatorController::class, 'OrgaEvents'])->name('organisateur.events');
     Route::resource('ticket', TicketController::class);
-
 });
 
 
@@ -58,13 +57,15 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
 Route::resource('event', EventController::class);
 Route::resource('categorie', CategoryController::class);
 
-Route::resource('reservation', ReservationController::class);
+Route::resource('reservation', ReservationController::class)->middleware('auth');
+
+Route::get('/myreservations', [ReservationController::class, 'myreservations'])->name('myreservations')->middleware('auth');;
 
 Route::get('/search', [EventController::class, 'search']);
 Route::get('/select', [EventController::class, 'select']);
 
-Route::get('unapproved', [EventController::class, 'unapproved'])->name('unapproved');
-Route::put('unapproved', [EventController::class, 'approve'])->name('approve.event');
+Route::middleware('can:access-admin')->get('unapproved', [EventController::class, 'unapproved'])->name('unapproved');
+Route::middleware('can:access-admin')->put('unapproved', [EventController::class, 'approve'])->name('approve.event');
 
 Route::get('password/reset', [ForgetController::class, 'show'])->name('password.request');
 Route::post('password/email', [ForgetController::class, 'sendlink'])->name('password.email');

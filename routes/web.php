@@ -61,4 +61,8 @@ Route::post('password/email', [ForgetController::class, 'sendlink'])->name('pass
 Route::get('password/reset/{token}/{email}', [ForgetController::class, 'breset'])->name('password.reset');
 Route::post('password/reseting', [ForgetController::class, 'resetPassword'])->name('resetPassword');
 
+Route::get('/ticket', function(){
+ return view('ticket');
+});
+
 

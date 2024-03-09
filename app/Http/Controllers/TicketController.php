@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Ticket;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class RoleController extends Controller
+
+class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,15 +28,25 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'type' => 'required',
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required',
+            'event_id' => 'required|exists:events,id',
+        ]);
+
+
+        $ticket = Ticket::create($validated);
+        return redirect()->route('organisateur.events');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Role $role)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +54,7 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +62,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +70,7 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(string $id)
     {
         //
     }

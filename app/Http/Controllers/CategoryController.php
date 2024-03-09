@@ -32,6 +32,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $this->authorize('access-admin');
         Category::create($request->validated());
         return redirect()->route('categorie.index');
     
@@ -58,6 +59,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $categorie)
     {
+        $this->authorize('access-admin');
         $categorie->update($request->all());
         return redirect()->route('categorie.index');
     }
@@ -67,6 +69,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $categorie)
     {
+        $this->authorize('access-admin');
         $categorie->delete();
         return redirect()->route('categorie.index');
     }

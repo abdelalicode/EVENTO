@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'status',
+        'user_id',
+        'ticket_id'
+    ];
+
+
+    public function ticket()
+    {
+        return $this->BelongsTo(Ticket::class);
+    }
+
+    public function user()
+    {
+        return $this->BelongsTo(User::class);
+    }
+    
 }

@@ -74,6 +74,11 @@ class AuthController extends Controller
     private function redirectTo()
     {
         $user = Auth::user();
+
+        if ($user->restricted === 1) {
+            return redirect()->back()->withErrors('You are not allowed to access this website.');
+        }
+
         switch ($user->role->name) {
             case 'admin':
                 return redirect('/AdminDashboard');

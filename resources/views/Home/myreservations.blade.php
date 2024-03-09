@@ -271,7 +271,11 @@
 
                                 <td class="py-3 text-sm" role="cell">
                                     @if ($res->status === 1)
-                                        GET YOUR TICKET
+                                        <form action="{{ route('getTicket', $res->id)}}" method="post">
+                                        @csrf
+                                        
+                                            <button type="submit">GET YOUR TICKET</button>
+                                    </form>
                                     @endif
                                 </td>
                             </tr>

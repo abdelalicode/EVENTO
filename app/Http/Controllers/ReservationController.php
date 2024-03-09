@@ -7,6 +7,7 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -62,6 +63,11 @@ class ReservationController extends Controller
         return redirect()->route('pendingreservations');
     }
     
+
+    public function getTicket(Reservation $reservation)
+    {
+        return view('ticket', compact('reservation'));
+    }
 
     /**
      * Display the specified resource.

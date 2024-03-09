@@ -79,3 +79,7 @@ Route::get('/ticket', function(){
 });
 
 
+Route::post('getTicket/{reservation}', [ReservationController::class, 'getTicket'])->name('getTicket');
+
+
+

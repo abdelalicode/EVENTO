@@ -119,7 +119,7 @@
   }
   
   .big {
-    font-size: 80px;
+    font-size: 40px;
     font-weight: 900;
     line-height: .8em;
   }
@@ -129,6 +129,7 @@
     right: 50px;
     color: #ef5658;
     font-size: 40px;
+    margin-bottom: 20px;
   }
   .info {
     display: flex;
@@ -169,32 +170,34 @@
         <span class="admit">Admit</span>
         <span class="line"></span>
         <span class="num">
-          Invitation
-          <span>31415926</span>
+          CATEGORY
+          <span>{{$reservation->ticket->type}}</span>
         </span>
       </div>
       <div class="number">1</div>
       <div class="invite">
         Invite for you
+        
       </div>
     </div>
     <div class="check">
       <div class="big">
-        You're <br> Invited
+        {{$reservation->ticket->event->title}}
       </div>
       <div class="number">#1</div>
       <div class="info">
         <section>
           <div class="title">Date</div>
-          <div>4/27/2016</div>
+          <div>{{ \Carbon\Carbon::parse($reservation->ticket->event->date)->format('j F Y') }}
+        </div>
         </section>
         <section>
-          <div class="title">Issued By</div>
-          <div>Ampersand</div>
+          <div class="title">Issued By EVNTO </div>
+          <div>{{$reservation->ticket->event->user->firstname}} {{$reservation->ticket->event->user->lastname}}</div>
         </section>
         <section>
-          <div class="title">Invite Number</div>
-          <div>31415926</div>
+          <div class="title">Ticket Number</div>
+          <div>{{$reservation->id}}</div>
         </section>
       </div>
     </div>

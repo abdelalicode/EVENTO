@@ -21,5 +21,9 @@ class Reservation extends Model
         return $this->BelongsTo(Ticket::class);
     }
 
+    public function user()
+    {
+        return $this->BelongsTo(User::class);
+    }
     
 }

@@ -50,6 +50,8 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
     Route::get('/dashboard', [OrganisatorController::class, 'OrgaDashboard'])->name('organisateur.dashboard');
     Route::get('/events', [OrganisatorController::class, 'OrgaEvents'])->name('organisateur.events');
     Route::resource('ticket', TicketController::class);
+    Route::get('pendingres', [ReservationController::class, 'pendingreservations'])->name('pendingreservations');
+    Route::put('approveres/{reservation}', [ReservationController::class, 'approvereservation'])->name('approve.reservation');
 });
 
 

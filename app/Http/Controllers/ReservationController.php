@@ -50,6 +50,19 @@ class ReservationController extends Controller
         return view ('Home.myreservations', compact('myreservations'));
     }
 
+    public function pendingreservations()
+    {
+        $pendingreservations = Reservation::where('status', 0)->get();
+        return view ('Organisator.pendingres', compact('pendingreservations'));
+    }
+
+    public function approvereservation(Reservation $reservation)
+    {
+        $reservation->update(['status' => 1]);
+        return redirect()->route('pendingreservations');
+    }
+    
+
     /**
      * Display the specified resource.
      */

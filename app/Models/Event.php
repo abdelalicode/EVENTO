@@ -42,5 +42,8 @@ class Event extends Model implements HasMedia
         return $this->hasMany(Ticket::class);
     }
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

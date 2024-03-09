@@ -35,4 +35,27 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'User has been banned successfully.');
 
     }
+
+    public function getStats()
+    {
+        $user_id = auth()->id();
+
+        $adminreservationsByEvent = DB::table('events')
+            ->select('events.id', 'events.title', DB::raw('COUNT(reservations.id) AS total_reservations'))
+            ->join('tickets', 'events.id', '=', 'tickets.event_id')
+            ->join('reservations', 'tickets.id', '=', 'reservations.ticket_id')
+            ->groupBy('events.id', 'events.title')
+            ->get();
+
+        $adminresults = DB::table('categories')
+            ->join('events', 'categories.id', '=', 'events.category_id')
+            ->join('tickets', 'events.id', '=', 'tickets.event_id')
+            ->join('reservations', 'tickets.id', '=', 'reservations.ticket_id')
+            ->groupBy('categories.id', 'categories.name')
+            ->select('categories.name AS category_name', DB::raw('COUNT(reservations.id) AS total_reservations'))
+            ->get();
+
+
+        return view('Admin.stats', compact('adminreservationsByEvent', 'adminresults'));
+    }
 }

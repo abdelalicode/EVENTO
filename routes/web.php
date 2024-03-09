@@ -42,6 +42,8 @@ Route::controller(AuthController::class)->group(function(){
 Route::middleware('can:access-admin')->get('/AdminDashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
 Route::middleware('can:access-admin')->get('/allusers', [AdminController::class, 'allusers'])->name('allusers');
 Route::middleware('can:access-admin')->put('/banuser/{user}', [AdminController::class, 'banuser'])->name('ban.user');
+Route::middleware('can:access-admin')->get('adminstats', [AdminController::class, 'getStats'])->name('getAdminStats');
+
 
 // Route::middleware('can:access-organisateur')->get('/OrgaDashboard', [OrganisatorController::class, 'OrgaDashboard']);
 // Route::middleware('can:access-organisateur')->get('/OrgaEvents', [OrganisatorController::class, 'OrgaEvents']);
@@ -52,6 +54,7 @@ Route::middleware('can:access-organisateur')->prefix('organisateur')->group(func
     Route::resource('ticket', TicketController::class);
     Route::get('pendingres', [ReservationController::class, 'pendingreservations'])->name('pendingreservations');
     Route::put('approveres/{reservation}', [ReservationController::class, 'approvereservation'])->name('approve.reservation');
+    Route::get('stats', [OrganisatorController::class, 'getStats'])->name('getStats');
 });
 
 

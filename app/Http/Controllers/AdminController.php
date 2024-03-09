@@ -40,14 +40,14 @@ class AdminController extends Controller
     {
         $user_id = auth()->id();
 
-        $reservationsByEvent = DB::table('events')
+        $adminreservationsByEvent = DB::table('events')
             ->select('events.id', 'events.title', DB::raw('COUNT(reservations.id) AS total_reservations'))
             ->join('tickets', 'events.id', '=', 'tickets.event_id')
             ->join('reservations', 'tickets.id', '=', 'reservations.ticket_id')
             ->groupBy('events.id', 'events.title')
             ->get();
 
-        $results = DB::table('categories')
+        $adminresults = DB::table('categories')
             ->join('events', 'categories.id', '=', 'events.category_id')
             ->join('tickets', 'events.id', '=', 'tickets.event_id')
             ->join('reservations', 'tickets.id', '=', 'reservations.ticket_id')

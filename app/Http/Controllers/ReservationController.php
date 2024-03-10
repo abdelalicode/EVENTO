@@ -60,6 +60,9 @@ class ReservationController extends Controller
     public function approvereservation(Reservation $reservation)
     {
         $reservation->update(['status' => 1]);
+
+        $ticket = Ticket::where('id', $reservation->ticket_id);
+        $ticket->decrement('quantity');
         return redirect()->route('pendingreservations');
     }
     

@@ -26,6 +26,7 @@ class AdminController extends Controller
                     ->whereNotIn('id', [Auth::user()->id])
                     ->get();
 
+
         return view('Admin.users', compact('allusers'));
     }
 

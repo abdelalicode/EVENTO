@@ -22,7 +22,7 @@ class EventController extends Controller
     public function unapproved()
     {
         $unapproveds = Event::where('approved', 0)->get();
-        
+
         return view('Admin.unapproved', compact('unapproveds'));
     }
 
@@ -121,8 +121,15 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $this->authorize('access-organisateur');
-        $event->update($request->all());
-        return redirect()->route('organisateur.events');
+
+        if ($event->user->id === Auth::user()->id) {
+            $event->update($request->all());
+            return redirect()->route('organisateur.events');
+        }
+        else
+        {
+            redirect()->back()->withErrors('Youre not allowed');
+        }
     }
 
     public function approve(Request $request)
